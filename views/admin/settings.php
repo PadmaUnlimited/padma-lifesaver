@@ -1,5 +1,5 @@
 <div class="wrap">
-    <h1>Headway to Blox</h1>
+    <h1>Headway to Padma</h1>
     <hr class="wp-header-end">
     <br />
     <p></p>
@@ -18,6 +18,6 @@
             </select>
         </div>
         <br />
-        <input class="button button-primary" type="submit" name="hwtobt" value="Start Conversion" <?php if(! $hw || ! $bt): ?>disabled="disabled"<?php endif; ?> />
+        <input class="button button-primary" type="submit" name="lifesaver" value="Start Conversion" <?php if(! $hw || ! $pt): ?>disabled="disabled"<?php endif; ?> />
     </form>
 </div>
