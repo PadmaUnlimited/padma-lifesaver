@@ -13,7 +13,7 @@ class lifesaver extends lifesaver\helpers\Plugin {
 
 	private $name;
 	private $pre;
-	private $version;
+	public 	$version;
 	private $scripts 	= array();
 	private $styles 	= array();
 	private $options 	= array();
@@ -150,7 +150,7 @@ class lifesaver extends lifesaver\helpers\Plugin {
 
     private function convertToPadma($json) {
 
-    	debug($json)
+    	debug($json);
 
     	if($this->source == 'headway'){
 
@@ -212,7 +212,7 @@ class lifesaver extends lifesaver\helpers\Plugin {
                 $sidebars_widgets['array_version'] 	= 3;
                 update_option('sidebars_widgets', $sidebars_widgets);
             	
-            }elseif ($this->template == 'headway' || ($this->template == 'bloxtheme' ) {
+            }elseif ($this->template == 'headway' || $this->template == 'bloxtheme' ) {
             	
                 $theme_mods['sidebars_widgets']['time'] = time();
                 $theme_mods['sidebars_widgets']['data'] = $sidebars_widgets;

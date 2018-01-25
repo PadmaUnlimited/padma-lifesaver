@@ -1,6 +1,6 @@
 <?php
 /**
-Plugin Name: Padma life-save
+Plugin Name: Padma Life saver
 Description: Convert Headway or Blox Templates to Padma Templates. Original plugin hw-to-bt from Johnathan.PRO.
 Version: 1.0.0
 Author: Plasma Soluciones
@@ -14,7 +14,7 @@ defined('ABSPATH') or die( 'Access Forbidden!' );
 
 require_once(dirname(__FILE__) . '/helpers/Plugin.php');
 require_once(dirname(__FILE__) . '/helpers/Plugin.php');
-require_once(dirname(__FILE__) . '/includes/live_saver.php');
+require_once(dirname(__FILE__) . '/includes/class_life_saver.php');
 
 /**
  *
