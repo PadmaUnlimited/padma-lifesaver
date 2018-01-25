@@ -1,6 +1,6 @@
 <?php
 /**
- * Copy from /headway/library/data/data-portability.php
+ * Copy from /bloxtheme/library/data/data-portability.php
  */
 namespace lifesaver\helpers;
 
@@ -8,9 +8,9 @@ class PadmaDataPortability extends \PadmaDataPortability {
     public static function export_skin(array $info) {
         global $wpdb;
 
-        do_action('headway_before_export_skin');
+        do_action('bloxtheme_before_export_skin');
 
-        $wp_options_prefix = 'headway_|template=' . \PadmaOption::$current_skin . '|_';
+        $wp_options_prefix = 'bloxtheme_|template=' . \PadmaOption::$current_skin . '|_';
 
         $skin = array(
             'hw-version' => HEADWAY_VERSION,
@@ -26,7 +26,7 @@ class PadmaDataPortability extends \PadmaDataPortability {
         );
 
         /* Spit the file out */
-        $filename = 'Headway Template - ' . padma_get('name', $info, 'Unnamed');
+        $filename = 'Bloxtheme Template - ' . padma_get('name', $info, 'Unnamed');
 
         if ( padma_get('version', $info) ) {
             $filename .= ' ' . padma_get('version', $info);

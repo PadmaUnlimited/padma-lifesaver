@@ -8,18 +8,20 @@
  *
  */
 
+namespace lifesaver;
+
 class lifesaver extends lifesaver\helpers\Plugin {
 
 
 	public $name;
 	public $pre;
 	public $version;
-	public $scripts 	= array();
-	public $styles 	= array();
-	public $options 	= array();
+	public $scripts    = array();
+	public $styles 	   = array();
+	public $options    = array();
 	public $menu_pages = array();
-	public $actions	= array();
-	public $filters	= array();
+	public $actions	   = array();
+	public $filters	   = array();
 	public $source;
 	public $source_dir;
 	public $padma_dir;
