@@ -8,9 +8,8 @@
  *
  */
 
-namespace lifesaver;
 
-class lifesaver extends helpers\Plugin {
+class lifesaver extends lifesaver\helpers\Plugin {
 
 
 	public $name;
@@ -28,55 +27,57 @@ class lifesaver extends helpers\Plugin {
 	public $template;
 	public $stylesheet;
 	public $skin_path;
+    private $json;
 
 
 
     public function __construct($args = false) {
-
-        $this->name 		= plugin_basename(__FILE__);
-        $this->pre 			= strtolower(__CLASS__);
-        $this->version 		= '1.0.0';
-        $this->scripts 		= array(
+        $this->name         = plugin_basename(__FILE__);
+        $this->pre          = strtolower(__CLASS__);
+        $this->version      = '1.0.0';
+        $this->scripts      = array(
             'admin' =>  array(
-                $this->pre . '-js'	=>  array(
-                    'src'	=>  plugins_url('/js/admin.js', __FILE__)
+                $this->pre . '-js'  =>  array(
+                    'src'   =>  plugins_url('/js/admin.js', __FILE__)
                 )
             )
         );
-        $this->styles 		= array(
+        $this->styles       = array(
             'admin' =>  array(
                 $this->pre . '-css'  =>  array(
-                    'src'	=>  plugins_url('/css/admin.css', __FILE__)
+                    'src'   =>  plugins_url('/css/admin.css', __FILE__)
                 )
             )
         );
-        $this->options 		= array();
-        $this->menu_pages 	= array(
+        $this->options      = array();
+        $this->menu_pages   = array(
             'Life saver'   =>  array(
                 'capability'    =>  'edit_dashboard',
                 'position'      =>  '1',
                 'func'          =>  'Settings',
             ),
         );
-        $this->actions 		= array(
-            'plugins_loaded'        	=>  false,
-            'after_setup_theme'     	=>  false,
-            'admin_notices'         	=>  false,
-            'wp_async_lifesaver_json'  	=>  'setPadma'
+        $this->actions      = array(
+            'plugins_loaded'            =>  false,
+            'after_setup_theme'         =>  false,
+            'admin_notices'             =>  false,
+            'wp_async_lifesaver_json'   =>  'setPadma'
         );
-        $this->filters 		= array();
+        $this->filters      = array();
 
         //register the plugin and init assets
         $this->register_plugin($this->name, __FILE__, true);
+        
 
-        $this->source 		= $this->detectSource();
-        $this->source_dir 	= WP_CONTENT_DIR . '/themes/' . $this->source;
-        $this->padma_dir 	= WP_CONTENT_DIR . '/themes/padma';
-        $this->template 	= '';
-        $this->stylesheet 	= '';
-        $this->skin_path 	= wp_upload_dir()['basedir'] . '/hwdata.json';
+        $this->source       = $this->detectSource();
+        $this->source_dir   = WP_CONTENT_DIR . '/themes/' . $this->source;
+        $this->padma_dir    = WP_CONTENT_DIR . '/themes/padma';
+        $this->template     = '';
+        $this->stylesheet   = '';
+        $this->skin_path    = wp_upload_dir()['basedir'] . '/hwdata.json';
 
-        new lifesaver\helpers\json();
+        $this->json = new lifesaver\helpers\json();
+
     }
 
     private function detectSource(){
@@ -154,7 +155,6 @@ class lifesaver extends helpers\Plugin {
 
     private function convertToPadma($json) {
 
-    	debug($json);
 
     	if($this->source == 'headway'){
 
@@ -364,8 +364,8 @@ class lifesaver extends helpers\Plugin {
 
     public function Settings() {
 
-    	$exist_source_dir 	= file_exists($this->source_dir);
-    	$exist_padma_dir 	= file_exists($this->padma_dir);
+        $exist_source_dir   = file_exists($this->source_dir);
+        $exist_padma_dir    = file_exists($this->padma_dir);
 
         if(! $exist_source_dir ) {
             $this->render_err( ucfirst($this->source) . ' theme does not exist');
@@ -375,12 +375,13 @@ class lifesaver extends helpers\Plugin {
             $this->render_err('Padma theme does not exist');
         }
 
+        
         switch ($this->source) {
 
         	case 'headway':
 		        if( !class_exists('HeadwayTemplates')) {
 		            require($this->source_dir . '/library/common/image-resizer.php');
-		            require_once(dirname(__FILE__) . '/helpers/headway/functions.php');
+		            require_once(dirname(__FILE__,2) . '/helpers/headway/functions.php');
 		            require($this->source_dir . '/library/data/data-options.php');
 		            require($this->source_dir . '/library/common/templates.php');
 		        }
@@ -390,7 +391,7 @@ class lifesaver extends helpers\Plugin {
         	case 'bloxtheme':
         		if( !class_exists('BloxTemplates')) {
 		            require($this->source_dir . '/library/common/image-resizer.php');
-		            require_once(dirname(__FILE__) . '/helpers/bloxtheme/functions.php');
+		            require_once(dirname(__FILE__,2) . '/helpers/bloxtheme/functions.php');
 		            require($this->source_dir . '/library/data/data-options.php');
 		            require($this->source_dir . '/library/common/templates.php');
 		        }
@@ -402,9 +403,8 @@ class lifesaver extends helpers\Plugin {
         		break;
         }
         
-
         $this->render('settings', array(
-            'Source'	=>  $exist_source_dir,
+            'Source'    =>  $exist_source_dir,
             'Padma'     =>  $exist_padma_dir,
             'nonce'     =>  wp_create_nonce('lifesaver_nonce'),
             'templates' =>  $templates

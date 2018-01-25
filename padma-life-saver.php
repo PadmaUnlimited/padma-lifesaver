@@ -11,21 +11,15 @@ License: GPL
 
 defined('ABSPATH') or die( 'Access Forbidden!' );
 
+ini_set('memory_limit', '1024M');
+function padma_mem(){
+	$u = memory_get_usage()/1024.0;
+    error_log( $u . " kb");
+}
 
-require_once(dirname(__FILE__) . '/helpers/Plugin.php');
+require_once(dirname(__FILE__) . '/helpers/Async.php');
 require_once(dirname(__FILE__) . '/helpers/Plugin.php');
 require_once(dirname(__FILE__) . '/includes/class_life_saver.php');
-
-/**
- *
- * Debug function
- *
- */
-if(!function_exists('debug')){
-    function debug($data){
-        error_log("<pre>".print_r($data,1)."</pre>");
-    }
-}
 
 
 $GLOBALS['lifesaver'] = new lifesaver();

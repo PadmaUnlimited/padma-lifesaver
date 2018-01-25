@@ -1,5 +1,5 @@
 <div class="wrap">
-    <h1>Headway to Padma</h1>
+    <h1>Headway or BloxTheme to Padma</h1>
     <hr class="wp-header-end">
     <br />
     <p></p>
