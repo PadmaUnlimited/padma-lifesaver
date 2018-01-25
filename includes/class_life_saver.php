@@ -11,21 +11,21 @@
 class lifesaver extends lifesaver\helpers\Plugin {
 
 
-	private $name;
-	public  $pre;
-	public 	$version;
-	public  $scripts 	= array();
-	public  $styles 	= array();
-	public  $options 	= array();
-	public  $menu_pages = array();
-	public  $actions	= array();
-	public  $filters	= array();
-	private $source;
-	private $source_dir;
-	private $padma_dir;
-	private $template;
-	private $stylesheet;
-	private $skin_path;
+	public $name;
+	public $pre;
+	public $version;
+	public $scripts 	= array();
+	public $styles 	= array();
+	public $options 	= array();
+	public $menu_pages = array();
+	public $actions	= array();
+	public $filters	= array();
+	public $source;
+	public $source_dir;
+	public $padma_dir;
+	public $template;
+	public $stylesheet;
+	public $skin_path;
 
 
 
