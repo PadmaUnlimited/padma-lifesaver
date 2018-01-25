@@ -31,10 +31,23 @@ along with Padma Services plugin. If not, see https://www.gnu.org/licenses/gpl-2
 defined('ABSPATH') or die( 'Access Forbidden!' );
 
 
+require_once(dirname(__FILE__) . '/helpers/wp_async_task.php');
+require_once(dirname(__FILE__) . '/helpers/Async.php');
+require_once(dirname(__FILE__) . '/helpers/Plugin.php');
 require_once(dirname(__FILE__) . '/includes/class_padmaLifeSaver.php');
+require_once(dirname(__FILE__) . '/includes/class_padmaConverter.php');
 
-$lifeSaver = new padmaLifeSaver();
 
+/**
+ *
+ * Debug function
+ *
+ */
+if(!function_exists('debug')){	
+	function debug($data){
+		error_log("<pre>".print_r($data,1)."</pre>");
+	}	
+}
 
 /**
  *
@@ -44,8 +57,8 @@ $lifeSaver = new padmaLifeSaver();
 function padma_lifeSaver_activate(){
 	if ( ! current_user_can( 'activate_plugins' ) )
 	return;
-	
-	$lifeSaver->activation();
+
+	padmaLifeSaver::activation();
 
 }
 register_activation_hook( __FILE__, 'padma_lifeSaver_activate');
@@ -61,7 +74,7 @@ function padma_lifeSaver_deactivate(){
 	if ( ! current_user_can( 'activate_plugins' ) )
 	return;
 	
-	$lifeSaver->deactivation();
+	padmaLifeSaver::deactivation();
 
 }
 register_deactivation_hook( __FILE__, 'padma_lifeSaver_deactivate');
@@ -74,7 +87,8 @@ register_deactivation_hook( __FILE__, 'padma_lifeSaver_deactivate');
  */
 function padma_lifeSaver_menuOptions(){
 
-    add_menu_page( 'Padma Life Saver', 'Padma Life Saver', 'manage_options', 'padma-life-saver', array($lifeSaver,'menuOptionsPage'));
+	$lifeSaver = new padmaLifeSaver();
+    add_menu_page( 'Padma Life Saver', 'Padma Life Saver', 'manage_options', 'padma-life-saver', array($lifeSaver,'menuOptionsPage'),'',1);
 
 }
 
@@ -100,6 +114,9 @@ if (is_admin()) {
 	add_action( 'admin_enqueue_scripts', 'padma_lifeSaver_assets_css');
 	add_action( 'admin_footer', 'padma_lifeSaver_assets_js');
 }
+
+
+debug($_REQUEST);
 
 /*
 

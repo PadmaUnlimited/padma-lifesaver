@@ -1,3 +1,26 @@
+<?php
+
+defined('ABSPATH') or die( 'Access Forbidden!' );
+
+
+$lifeSaver = new padmaLifeSaver();
+
+
+$source         = $lifeSaver->getSource();
+$source_label   = ucfirst($source);
+$templates      = $lifeSaver->getTemplates();
+$nonce          = wp_create_nonce('lifesaver_nonce');
+
+echo $lifeSaver->alertBox( $source_label . ' detected','warning');
+
+if($_POST){
+    $GLOBALS['lifesaver'] = new padmaConverter($source);
+    debug($GLOBALS['lifesaver']);
+}
+
+
+
+?>
 <div class="wrap">
     <h1>Headway or BloxTheme to Padma</h1>
     <hr class="wp-header-end">
@@ -10,7 +33,7 @@
         </div>
         <br />
         <div>
-            <label for="template">Headway Template:</label>
+            <label for="template"><?php echo $source_label; ?> Template:</label>
             <select id="template" name="template">
                 <?php foreach($templates as $template): ?>
                 <option value="<?php echo $template['id']; ?>"><?php echo $template['name']; ?></option>
@@ -18,6 +41,6 @@
             </select>
         </div>
         <br />
-        <input class="button button-primary" type="submit" name="lifesaver" value="Start Conversion" <?php if(! $hw || ! $pt): ?>disabled="disabled"<?php endif; ?> />
+        <input class="button button-primary" type="submit" name="lifesaver" value="Start Conversion" <?php if(!$lifeSaver->dirValidation()): ?>disabled="disabled"<?php endif; ?> />
     </form>
 </div>

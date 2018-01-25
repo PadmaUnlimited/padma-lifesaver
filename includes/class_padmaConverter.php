@@ -9,7 +9,7 @@
  */
 
 
-class lifesaver extends lifesaver\helpers\Plugin {
+class padmaConverter extends Plugin {
 
 
 	public $name;
@@ -18,7 +18,7 @@ class lifesaver extends lifesaver\helpers\Plugin {
 	public $scripts    = array();
 	public $styles 	   = array();
 	public $options    = array();
-	public $menu_pages = array();
+	//public $menu_pages = array();
 	public $actions	   = array();
 	public $filters	   = array();
 	public $source;
@@ -31,7 +31,11 @@ class lifesaver extends lifesaver\helpers\Plugin {
 
 
 
-    public function __construct($args = false) {
+    public function __construct($source = false) {
+        
+        if(!$source)
+            return;
+
         $this->name         = plugin_basename(__FILE__);
         $this->pre          = strtolower(__CLASS__);
         $this->version      = '1.0.0';
@@ -50,13 +54,14 @@ class lifesaver extends lifesaver\helpers\Plugin {
             )
         );
         $this->options      = array();
+        /*
         $this->menu_pages   = array(
             'Life saver'   =>  array(
                 'capability'    =>  'edit_dashboard',
                 'position'      =>  '1',
                 'func'          =>  'Settings',
             ),
-        );
+        );*/
         $this->actions      = array(
             'plugins_loaded'            =>  false,
             'after_setup_theme'         =>  false,
@@ -69,33 +74,16 @@ class lifesaver extends lifesaver\helpers\Plugin {
         $this->register_plugin($this->name, __FILE__, true);
         
 
-        $this->source       = $this->detectSource();
+        $this->source       = $source;
         $this->source_dir   = WP_CONTENT_DIR . '/themes/' . $this->source;
         $this->padma_dir    = WP_CONTENT_DIR . '/themes/padma';
         $this->template     = '';
         $this->stylesheet   = '';
         $this->skin_path    = wp_upload_dir()['basedir'] . '/hwdata.json';
 
-        $this->json = new lifesaver\helpers\json();
+        $this->json = new json();
 
     }
-
-    private function detectSource(){
-
-    	if(class_exists('Headway')) {    		
-    		return 'headway';
-
-    	}elseif (class_exists('Blox')) {    		
-    		return 'bloxtheme';
-
-    	}elseif (file_exists(WP_CONTENT_DIR . '/themes/headway')) {
-    		return 'headway';
-
-    	}elseif (file_exists(WP_CONTENT_DIR . '/themes/bloxtheme')) {
-    		return 'bloxtheme';    		
-    	}
-    }
-
 
     private function getSource() {
 
@@ -361,7 +349,7 @@ class lifesaver extends lifesaver\helpers\Plugin {
             $this->render_msg( ucfirst($this->Source) . ' to Padma conversion completed');
         }
     }
-
+    /*
     public function Settings() {
 
         $exist_source_dir   = file_exists($this->source_dir);
@@ -410,4 +398,5 @@ class lifesaver extends lifesaver\helpers\Plugin {
             'templates' =>  $templates
         ));
     }
+    */
 }

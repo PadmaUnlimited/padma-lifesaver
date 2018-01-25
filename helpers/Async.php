@@ -1,9 +1,5 @@
 <?php
 
-namespace lifesaver\helpers;
-
-require_once('wp_async_task.php');
-
 class json extends \WP_Async_Task {
 
     protected $action = 'lifesaver_json';
