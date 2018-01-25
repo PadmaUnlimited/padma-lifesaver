@@ -14,18 +14,20 @@ class lifesaver extends lifesaver\helpers\Plugin {
 	private $name;
 	public  $pre;
 	public 	$version;
-	private $scripts 	= array();
-	private $styles 	= array();
-	private $options 	= array();
-	private $menu_pages = array();
-	private $actions	= array();
-	private $filters	= array();
+	public  $scripts 	= array();
+	public  $styles 	= array();
+	public  $options 	= array();
+	public  $menu_pages = array();
+	public  $actions	= array();
+	public  $filters	= array();
 	private $source;
 	private $source_dir;
 	private $padma_dir;
 	private $template;
 	private $stylesheet;
 	private $skin_path;
+
+
 
     public function __construct($args = false) {
 
