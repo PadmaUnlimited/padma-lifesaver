@@ -10,7 +10,7 @@
 
 namespace lifesaver;
 
-class lifesaver extends lifesaver\helpers\Plugin {
+class lifesaver extends helpers\Plugin {
 
 
 	public $name;
