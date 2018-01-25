@@ -12,7 +12,7 @@ class lifesaver extends lifesaver\helpers\Plugin {
 
 
 	private $name;
-	private $pre;
+	public  $pre;
 	public 	$version;
 	private $scripts 	= array();
 	private $styles 	= array();
