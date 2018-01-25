@@ -1,6 +1,6 @@
 <?php
 /**
- * Copied from /padmatheme/library/common/functions.php
+ * Copied from /padma/library/common/functions.php
  */
 
 /**
