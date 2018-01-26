@@ -14,10 +14,19 @@ $nonce          = wp_create_nonce('lifesaver_nonce');
 echo $lifeSaver->alertBox( $source_label . ' detected','warning');
 
 if($_POST){
-    $GLOBALS['lifesaver'] = new padmaConverter($source);
-    debug($GLOBALS['lifesaver']);
+    $converter = new padmaConverter($source);
+    $converter->plugins_loaded();
+    $converter->after_setup_theme();
+    $converter->admin_notices();
+    $converter->setPadma();
+
+}
+if($_GET['lifesaver-convert'] == 'complete'){
+    echo $lifeSaver->alertBox($source_label . ' to Padma conversion completed','success');
 }
 
+debug($_GET);
+debug($_REQUEST);
 
 
 ?>

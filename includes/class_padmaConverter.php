@@ -19,7 +19,7 @@ class padmaConverter extends Plugin {
 	public $styles 	   = array();
 	public $options    = array();
 	//public $menu_pages = array();
-	public $actions	   = array();
+	//public $actions	   = array();
 	public $filters	   = array();
 	public $source;
 	public $source_dir;
@@ -62,12 +62,13 @@ class padmaConverter extends Plugin {
                 'func'          =>  'Settings',
             ),
         );*/
+        /*
         $this->actions      = array(
             'plugins_loaded'            =>  false,
             'after_setup_theme'         =>  false,
             'admin_notices'             =>  false,
             'wp_async_lifesaver_json'   =>  'setPadma'
-        );
+        );*/
         $this->filters      = array();
 
         //register the plugin and init assets
@@ -81,7 +82,7 @@ class padmaConverter extends Plugin {
         $this->stylesheet   = '';
         $this->skin_path    = wp_upload_dir()['basedir'] . '/hwdata.json';
 
-        $this->json = new json();
+        //$this->json = new json();
 
     }
 
@@ -100,45 +101,59 @@ class padmaConverter extends Plugin {
         }
 
         if($this->source == 'headway'){
+
 	        if(! class_exists('Headway')) {
-	            require_once(dirname(__FILE__) . '/helpers/headway/functions.php');
+
+	            require_once(dirname(__FILE__,2) . '/helpers/headway/functions.php');
 	            require_once($this->source_dir . '/library/common/application.php');
-	            Headway::init();
-        		Headway::load('data/data-portability');
-        		require_once(dirname(__FILE__) . '/helpers/headway/data-portability.php');
 
-        		$info = array(
-		            'name'      =>  'Headway export ' . date('m-d-Y'),
-		            'author'    =>  $author,
-		            'version'   =>  'v' . HEADWAY_VERSION,
-		            'image-url' =>  ''
-		        );
+            }
 
-	        }
+            Headway::init();
+    		Headway::load('data/data-portability');
+            HeadwayOption::$current_skin = $_REQUEST['template'];        	
+            require_once(dirname(__FILE__,2) . '/helpers/headway/data-portability.php');
+
+    		$info = array(
+	            'name'      =>  'Headway export ' . date('m-d-Y'),
+	            'author'    =>  $author,
+	            'version'   =>  'v' . HEADWAY_VERSION,
+	            'image-url' =>  ''
+	        );
+
+            ob_start();
+            $filename = lifesaver\helpers\HeadwayDataPortability::export_skin($info);
+            $skin = ob_get_clean();
+
+            return $skin;
+
         }elseif ($this->source == 'bloxtheme') {
         	if(! class_exists('Blox')) {
-	            require_once(dirname(__FILE__) . '/helpers/bloxtheme/functions.php');
-	            require_once($this->source_dir . '/library/common/application.php');
-	            Blox::init();
-        		Blox::load('data/data-portability');
-        		require_once(dirname(__FILE__) . '/helpers/bloxtheme/data-portability.php');
 
-        		$info = array(
-		            'name'      =>  'Blox export ' . date('m-d-Y'),
-		            'author'    =>  $author,
-		            'version'   =>  'v' . BLOX_VERSION,
-		            'image-url' =>  ''
-		        );
-	        }
+                require_once(dirname(__FILE__,2) . '/helpers/bloxtheme/functions.php');
+                require_once($this->source_dir . '/library/common/application.php');
+
+            }
+
+            Blox::init();
+            Blox::load('data/data-portability');
+            BloxOption::$current_skin = $_REQUEST['template'];           
+            require_once(dirname(__FILE__,2) . '/helpers/bloxtheme/data-portability.php');
+
+            $info = array(
+                'name'      =>  'Blox export ' . date('m-d-Y'),
+                'author'    =>  $author,
+                'version'   =>  'v' . BLOX_VERSION,
+                'image-url' =>  ''
+            );
+
+            ob_start();
+            $filename = lifesaver\helpers\BloxDataPortability::export_skin($info);
+            $skin = ob_get_clean();
+
+            return $skin;
         }
 
-        PadmaOption::$current_skin = $_REQUEST['template'];        
-
-        ob_start();
-        $filename 	= lifesaver\helpers\PadmaDataPortability::export_skin($info);
-        $skin 		= ob_get_clean();
-
-        return $skin;
     }
 
     private function convertToPadma($json) {
@@ -346,7 +361,7 @@ class padmaConverter extends Plugin {
 
     public function admin_notices() {
         if(isset($_GET['lifesaver-convert']) && $_GET['lifesaver-convert'] == 'complete') {
-            $this->render_msg( ucfirst($this->Source) . ' to Padma conversion completed');
+            echo $this->alertBox( ucfirst($this->Source) . ' to Padma conversion completed','success');
         }
     }
     /*

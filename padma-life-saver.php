@@ -114,36 +114,3 @@ if (is_admin()) {
 	add_action( 'admin_enqueue_scripts', 'padma_lifeSaver_assets_css');
 	add_action( 'admin_footer', 'padma_lifeSaver_assets_js');
 }
-
-
-debug($_REQUEST);
-
-/*
-
-exit();
-
-$this->menu_pages   = array(
-            'Life saver'   =>  array(
-                'capability'    =>  'edit_dashboard',
-                'position'      =>  '1',
-                'func'          =>  'Settings',
-            ),
-        );
-
-
-
-
-ini_set('memory_limit', '1024M');
-function padma_mem(){
-	$u = memory_get_usage()/1024.0;
-    error_log( $u . " kb");
-}
-
-require_once(dirname(__FILE__) . '/helpers/Async.php');
-require_once(dirname(__FILE__) . '/helpers/Plugin.php');
-require_once(dirname(__FILE__) . '/includes/class_life_saver.php');
-
-
-
-$GLOBALS['lifesaver'] = new lifesaver();
-*/
