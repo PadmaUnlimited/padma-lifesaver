@@ -13,7 +13,7 @@ class PadmaDataPortability extends \PadmaDataPortability {
         $wp_options_prefix = 'padma_|template=' . \PadmaOption::$current_skin . '|_';
 
         $skin = array(
-            'hw-version' => HEADWAY_VERSION,
+            'padma-version' => HEADWAY_VERSION,
             'name' => padma_get('name', $info, 'Unnamed'),
             'author' => padma_get('author', $info),
             'image-url' => padma_get('image-url', $info),

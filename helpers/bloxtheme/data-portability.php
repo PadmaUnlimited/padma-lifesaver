@@ -13,7 +13,7 @@ class BloxDataPortability extends \BloxDataPortability {
         $wp_options_prefix = 'bloxtheme_|template=' . \BloxOption::$current_skin . '|_';
 
         $skin = array(
-            'hw-version' => HEADWAY_VERSION,
+            'bt-version' => HEADWAY_VERSION,
             'name' => blox_get('name', $info, 'Unnamed'),
             'author' => blox_get('author', $info),
             'image-url' => blox_get('image-url', $info),
