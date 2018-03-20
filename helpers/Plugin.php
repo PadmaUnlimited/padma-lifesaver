@@ -8,6 +8,7 @@ Plugin Helper
 03/17/2017 Update
 */
 
+namespace PadmaLifeSaver\helpers;
 
 class Plugin extends \WP_Widget {
     var $version = '';
@@ -42,7 +43,6 @@ class Plugin extends \WP_Widget {
     }
 
     function register_plugin($name = '', $base = '', $retain_options = false) {
-
         $this->url = explode("&", $_SERVER['REQUEST_URI'])[0];
 
         $this->domain = str_replace(array("-", "."), "_", $_SERVER['HTTP_HOST']);
@@ -159,6 +159,7 @@ class Plugin extends \WP_Widget {
         if(empty($retain_options)) {
             register_deactivation_hook($base, array($this, 'deactivation_hook'));
         }
+
         return true;
     }
 
@@ -767,20 +768,15 @@ class Plugin extends \WP_Widget {
     }
 
     function render($file = '', $params = array(), $output = true, $folder = 'admin') {
-        
-
         if (!empty($file)) {
-            
             $filename = $file . '.php';
             $filepath = $this->plugin_base . '/views/' . $folder . '/';
             $filefull = $filepath . $filename;
 
-            
             if (file_exists($filefull)) {
                 if ($output === false) {
                     ob_start();
                 }
-    
 
                 if (!empty($this->classes)) {
                     foreach ($this->classes as $name => $class) {
