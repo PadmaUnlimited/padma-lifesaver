@@ -99,7 +99,7 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
         $this->template 	= '';
         $this->stylesheet 	= '';
 
-        $this->skin_path = wp_upload_dir()['basedir'] . '/hwdata.json';        
+        $this->skin_path 	= wp_upload_dir()['basedir'] . '/hwdata.json';        
 
         new PadmaLifeSaver\helpers\json();
 
@@ -145,8 +145,6 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
 	        $filename 	= PadmaLifeSaver\helpers\HeadwayDataPortability::export_skin($info);
 	        $skin 		= ob_get_clean();
 
-	        return $skin;
-
         }elseif ($this->source == 'bloxtheme') {
 
         	if(! class_exists('Blox')) {
@@ -171,16 +169,15 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
             ob_start();
             $filename 	= PadmaLifeSaver\helpers\BloxDataPortability::export_skin($info);
             $skin 		= ob_get_clean();
-
-            return $skin;
         }
+        return $skin;
 
     }
 
 
+    // $json = $skin
     private function converttoPadmaUnlimited($json) {
 
-    	//debug($json);
 
     	if($this->source == 'headway'){
 
@@ -188,29 +185,31 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
         	$json = preg_replace('/(headway\_)/', 'padma_', $json);
 
     	}elseif ($this->source == 'bloxtheme') {
-    		
-    		$json = preg_replace('/(bt)/', 'padma', $json);
-        	$json = preg_replace('/(bloxtheme\_)/', 'padma_', $json);       	
 
-    	}   
+    		$json = preg_replace('/(bt)/', 'pu', $json);
+        	$json = preg_replace('/(bloxtheme\_)/', 'padma_', $json);
+
+    	}else{
+    		return;
+    	}
 
     	// pass on general settings
         $json 					= json_decode($json);
         $data_pu_blocks 		= json_encode($json->data_pu_blocks);
         
+
+        
         if($this->source == 'headway'){
         	
-        	$data_pu_blocks 		= preg_replace('/(\-headway\-)/', '-padma-', $data_pu_blocks);
+        	$data_pu_blocks 	= preg_replace('/(\-headway\-)/', '-padma-', $data_pu_blocks);
 
-        }elseif ($this->source == 'bloxtheme') {
-			$data_pu_blocks 		= preg_replace('/(\-bloxtheme\-)/', '-padma-', $data_pu_blocks);
+        }elseif ($this->source == 'bloxtheme'){
+
+			$data_pu_blocks 	= preg_replace('/(\-bloxtheme\-)/', '-padma-', $data_pu_blocks);
         }
 
         $json->data_pu_blocks 	= json_decode($data_pu_blocks);
-
-        
-
-        $json = json_encode($json);
+        $json 					= json_encode($json);
 
         return $json;
     }
@@ -222,12 +221,13 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
             require_once(dirname(__FILE__) . '/helpers/padma/functions.php');
             require_once($this->padma_dir . '/library/common/application.php');
         }
-
+        
         Padma::init();
-        Padma::load('data/data-portability');
+        Padma::load('data/data-portability');		
 
         if(file_exists($this->skin_path)) {
             $json = file_get_contents($this->skin_path);
+
             PadmaDataPortability::install_skin(json_decode($json, true));
             unlink($this->skin_path);
         }
@@ -335,15 +335,19 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
 
             if(wp_verify_nonce($_REQUEST['nonce'], 'PadmaLifeSaver_nonce') !== false) {
 
-                $json = $this->converttoPadmaUnlimited($this->getSource());
+            	$skin = $this->getSource();
+                $json = $this->converttoPadmaUnlimited($skin);
 
+                //debug($json);
+
+                /*
                 if($this->template != 'headway' && $this->template != 'bloxtheme') {
                     update_option('template', $this->template);
                 }
 
                 if($this->stylesheet != 'headway' && $this->stylesheet != 'bloxtheme') {
                     update_option('stylesheet', $this->stylesheet);
-                }
+                }*/
 
                 if(! empty($json)) {
 
@@ -406,7 +410,10 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
             $this->render_err('Padma Unlimited does not exist');
         }
 
-        $this->render_msg(ucfirst($this->source) . ' detected');
+        if($_GET['PadmaLifeSaver-convert']!='complete'){
+	        $this->render_msg('Make a full backup before start.');
+	        $this->render_msg(ucfirst($this->source) . ' detected');        	
+        }
 
 
         if($this->source == 'headway'){

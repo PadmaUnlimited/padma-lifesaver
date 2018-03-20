@@ -13,16 +13,16 @@ class BloxDataPortability extends \BloxDataPortability {
         $wp_options_prefix = 'bloxtheme_|template=' . \BloxOption::$current_skin . '|_';
 
         $skin = array(
-            'bt-version' => HEADWAY_VERSION,
+            'bt-version' => BLOX_VERSION,
             'name' => blox_get('name', $info, 'Unnamed'),
             'author' => blox_get('author', $info),
             'image-url' => blox_get('image-url', $info),
             'version' => blox_get('version', $info),
             'data_wp_options' => $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->options WHERE option_name LIKE '%s'", $wp_options_prefix . '%'), ARRAY_A),
-            'data_wp_postmeta' => $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->postmeta WHERE meta_key LIKE '%s'", '_hw_|template=' . \BloxOption::$current_skin . '|_%'), ARRAY_A),
-            'data_hw_layout_meta' => $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->hw_layout_meta WHERE template = '%s'", \BloxOption::$current_skin), ARRAY_A),
-            'data_hw_wrappers' => $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->hw_wrappers WHERE template = '%s'", \BloxOption::$current_skin), ARRAY_A),
-            'data_hw_blocks' => $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->hw_blocks WHERE template = '%s'", \BloxOption::$current_skin), ARRAY_A)
+            'data_wp_postmeta' => $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->postmeta WHERE meta_key LIKE '%s'", '_bt_|template=' . \BloxOption::$current_skin . '|_%'), ARRAY_A),
+            'data_bt_layout_meta' => $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->bt_layout_meta WHERE template = '%s'", \BloxOption::$current_skin), ARRAY_A),
+            'data_bt_wrappers' => $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->bt_wrappers WHERE template = '%s'", \BloxOption::$current_skin), ARRAY_A),
+            'data_bt_blocks' => $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->bt_blocks WHERE template = '%s'", \BloxOption::$current_skin), ARRAY_A)
         );
 
         /* Spit the file out */
