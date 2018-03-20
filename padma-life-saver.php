@@ -151,7 +151,7 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
 
         	if(! class_exists('Blox')) {
 
-                require_once(dirname(__FILE__,2) . '/helpers/bloxtheme/functions.php');
+                require_once(dirname(__FILE__) . '/helpers/bloxtheme/functions.php');
                 require_once($this->source_dir . '/library/common/application.php');
 
             }
@@ -159,7 +159,7 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
             Blox::init();
             Blox::load('data/data-portability');
             BloxOption::$current_skin = $_REQUEST['template'];           
-            require_once(dirname(__FILE__,2) . '/helpers/bloxtheme/data-portability.php');
+            require_once(dirname(__FILE__) . '/helpers/bloxtheme/data-portability.php');
 
             $info = array(
                 'name'      =>  'Blox export ' . date('m-d-Y'),

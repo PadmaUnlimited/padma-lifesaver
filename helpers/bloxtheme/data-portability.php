@@ -2,7 +2,7 @@
 /**
  * Copy from /bloxtheme/library/data/data-portability.php
  */
-namespace lifesaver\helpers;
+namespace PadmaLifeSaver\helpers;
 
 class BloxDataPortability extends \BloxDataPortability {
     public static function export_skin(array $info) {
