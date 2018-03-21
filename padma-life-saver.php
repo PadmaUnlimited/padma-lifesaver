@@ -407,7 +407,8 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
         }
 
         if(! $this->padma_exist) {
-            $this->render_err('Padma Unlimited does not exist');
+            $this->render_err('Padma Unlimited does not exist! Please install the latest version.');
+            die();
         }
 
         if($_GET['PadmaLifeSaver-convert']!='complete'){
