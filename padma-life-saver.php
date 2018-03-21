@@ -3,7 +3,7 @@
 Plugin Name:	Padma Life Saver
 Plugin URI:		https://padmaunlimited/plugins/padma-life-saver
 Description:  	Padma Live Saver plugin allows convert Headway or Blox Templates to Padma Templates. Original plugin hw-to-bt from Johnathan.PRO.
-Version:      	0.0.1
+Version:      	1.0.0
 Author:       	Plasma Soluciones
 Author URI:   	https://plasma.cr
 License:      	GPL2
