@@ -1,14 +1,14 @@
 <?php
 /*
-Plugin Name:	Padma Life Saver
-Plugin URI:		https://padmaunlimited/plugins/padma-life-saver
+Plugin Name:	Padma LifeSaver
+Plugin URI:		https://padmaunlimited/plugins/padma-lifesaver
 Description:  	Padma Live Saver plugin allows convert Headway or Blox Templates to Padma Templates. Original plugin hw-to-bt from Johnathan.PRO.
-Version:      	1.0.0
+Version:      	1.0.4
 Author:       	Plasma Soluciones
 Author URI:   	https://plasma.cr
 License:      	GPL2
 License URI:  	https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain:  	padma-lifeSaver
+Text Domain:  	padma-lifesaver
 Domain Path:  	/languages
 Network: false
 
@@ -72,7 +72,7 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
         $this->options = array();
 
         $this->menu_pages = array(
-            'Padma Life Saver'  	=>  array(
+            'Padma LifeSaver'  	=>  array(
                 'capability'    	=>  'edit_dashboard',
                 'position'      	=>  '1',
                 'func'          	=>  'Settings',
@@ -99,7 +99,10 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
         $this->template 	= '';
         $this->stylesheet 	= '';
 
-        $this->skin_path 	= wp_upload_dir()['basedir'] . '/hwdata.json';        
+
+        $basedir            = wp_upload_dir();
+        $basedir            = $basedir['basedir'];
+        $this->skin_path 	= $basedir . '/hwdata.json';
 
         new PadmaLifeSaver\helpers\json();
 
@@ -153,6 +156,7 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
                 require_once($this->source_dir . '/library/common/application.php');
 
             }
+
 
             Blox::init();
             Blox::load('data/data-portability');

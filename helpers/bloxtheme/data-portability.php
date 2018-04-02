@@ -5,12 +5,15 @@
 namespace PadmaLifeSaver\helpers;
 
 class BloxDataPortability extends \BloxDataPortability {
+    
+
     public static function export_skin(array $info) {
+
         global $wpdb;
 
-        do_action('bloxtheme_before_export_skin');
+        do_action('blox_before_export_skin');
 
-        $wp_options_prefix = 'bloxtheme_|template=' . \BloxOption::$current_skin . '|_';
+        $wp_options_prefix = 'blox_|template=' . \BloxOption::$current_skin . '|_';
 
         $skin = array(
             'bt-version' => BLOX_VERSION,
@@ -26,7 +29,7 @@ class BloxDataPortability extends \BloxDataPortability {
         );
 
         /* Spit the file out */
-        $filename = 'Bloxtheme Template - ' . blox_get('name', $info, 'Unnamed');
+        $filename = 'Blox Template - ' . blox_get('name', $info, 'Unnamed');
 
         if ( blox_get('version', $info) ) {
             $filename .= ' ' . blox_get('version', $info);
@@ -45,8 +48,6 @@ class BloxDataPortability extends \BloxDataPortability {
 
         if ( !$array['data-type'] = $data_type )
             die('Missing data type for BloxDataPortability::to_json()');
-
-        //$array['image-definitions'] = self::encode_images($array);
 
         echo json_encode($array);
 
