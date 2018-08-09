@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name:	Padma LifeSaver
+Plugin Name:	Padma Lifesaver
 Plugin URI:		https://padmaunlimited/plugins/padma-lifesaver
-Description:  	Padma Live Saver plugin allows convert Headway or Blox Templates to Padma Templates. Original plugin hw-to-bt from Johnathan.PRO.
-Version:      	1.0.4
-Author:       	Plasma Soluciones
-Author URI:   	https://plasma.cr
+Description:  	Padma Lifesaver plugin allows convert Headway or Blox Templates to Padma Unlimited Templates. Based on the original plugin hw-to-bt from Johnathan.PRO.
+Version:      	1.0.6
+Author:       	Padma Unlimited Team
+Author URI:   	https://www.padmaunlimited.com/
 License:      	GPL2
 License URI:  	https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  	padma-lifesaver
@@ -47,10 +47,11 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
 
         $this->name 	= plugin_basename(__FILE__);
         $this->pre 		= strtolower(__CLASS__);
-        $this->version 	= '1.0.0';
+        $this->version 	= '1.0.6';
 
         $this->detectSource();
 
+        
         $_SESSION['padma-life-saver-source'] = $this->source;
 
         $this->scripts = array(
@@ -90,6 +91,7 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
 
         //register the plugin and init assets
         $this->register_plugin($this->name, __FILE__, true);
+
      
 
         $this->source_dir   = WP_CONTENT_DIR . '/themes/' . $this->source;
@@ -100,6 +102,8 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
         $this->stylesheet 	= '';
 
 
+        $this->testBeforeGo();
+
         $basedir            = wp_upload_dir();
         $basedir            = $basedir['basedir'];
         $this->skin_path 	= $basedir . '/hwdata.json';
@@ -108,6 +112,27 @@ class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
 
     }
 
+    private function testBeforeGo(){
+
+
+        if($_POST){
+
+            $info_link = '<a href="https://www.padmaunlimited.com/blog/2018/website-migration-from-headway-themes-3-8-x-bloxtheme-1-0-x-to-padma-unlimited-theme-builder/" target="_blank">More information</a>';
+
+            if($this->source == 'headway'){
+
+                if(wp_get_theme()->stylesheet != 'headway'){
+                    wp_die('Headway was not found, is Headway theme active? ' . $info_link);
+                }
+
+            }elseif ($this->source == 'bloxtheme') {
+
+                if(wp_get_theme()->stylesheet != 'bloxtheme'){
+                    wp_die('Blox was not found, is Blox theme active? ' . $info_link);
+                }            
+            }
+        } 
+    }
     
     private function getSource() {
 
