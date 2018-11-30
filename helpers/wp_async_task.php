@@ -1,4 +1,11 @@
 <?php
+/**
+ * Plugin Name: WP Asynchronous Tasks
+ * Version: 1.0
+ * Description: Creates an abstract class to execute asynchronous tasks
+ * Author: 10up, Eric Mann, Luke Gedeon, John P. Bloch
+ * License: MIT
+ */
 
 if ( ! class_exists( 'WP_Async_Task' ) ) {
     abstract class WP_Async_Task {

@@ -19,6 +19,6 @@
             </select>
         </div>
         <br />
-        <input class="button button-primary" type="submit" name="PadmaLifeSaver" value="Start Conversion" <?php if(! $source_exist || ! $padma_exist): ?>disabled="disabled"<?php endif; ?> />
+        <input class="button button-primary" type="submit" name="PadmaLifesaver" value="Start Conversion" <?php if(! $source_exist || ! $padma_exist): ?>disabled="disabled"<?php endif; ?> />
     </form>
 </div>

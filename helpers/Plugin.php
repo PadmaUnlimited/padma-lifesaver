@@ -8,7 +8,7 @@ Plugin Helper
 03/17/2017 Update
 */
 
-namespace PadmaLifeSaver\helpers;
+namespace PadmaLifesaver\helpers;
 
 class Plugin extends \WP_Widget {
     var $version = '';

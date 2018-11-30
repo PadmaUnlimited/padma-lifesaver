@@ -2,7 +2,7 @@
 /**
  * Copy from /bloxtheme/library/data/data-portability.php
  */
-namespace PadmaLifeSaver\helpers;
+namespace PadmaLifesaver\helpers;
 
 class BloxDataPortability extends \BloxDataPortability {
     

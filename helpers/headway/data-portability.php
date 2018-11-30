@@ -2,7 +2,7 @@
 /**
  * Copy from /headway/library/data/data-portability.php
  */
-namespace PadmaLifeSaver\helpers;
+namespace PadmaLifesaver\helpers;
 
 class HeadwayDataPortability extends \HeadwayDataPortability {
     public static function export_skin(array $info) {
