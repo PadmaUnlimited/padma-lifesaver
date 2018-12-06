@@ -1,15 +1,15 @@
 <?php
 /*
-Plugin Name:	Padma Lifesaver
-Plugin URI:		https://padmaunlimited/plugins/padma-lifesaver
-Description:  	Padma Lifesaver plugin allows convert Headway or Blox Templates to Padma Unlimited Templates. Based on the original plugin hw-to-bt from Johnathan.PRO.
-Version:      	1.0.8
-Author:       	Padma Unlimited Team
-Author URI:   	https://www.padmaunlimited.com/
-License:      	GPL2
-License URI:  	https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain:  	padma-lifesaver
-Domain Path:  	/languages
+Plugin Name:    Padma Lifesaver
+Plugin URI:     https://padmaunlimited/plugins/padma-lifesaver
+Description:    Padma Lifesaver plugin allows convert Headway or Blox Templates to Padma Unlimited Templates. Based on the original plugin hw-to-bt from Johnathan.PRO.
+Version:        1.0.8
+Author:         Padma Unlimited Team
+Author URI:     https://www.padmaunlimited.com/
+License:        GPL2
+License URI:    https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:    padma-lifesaver
+Domain Path:    /languages
 Network: false
 
 
@@ -33,24 +33,28 @@ defined('ABSPATH') or die( 'Access Forbidden!' );
 require_once(dirname(__FILE__) . '/helpers/Plugin.php');
 require_once(dirname(__FILE__) . '/helpers/Async.php');
 
-class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
+class PadmaLifeSaver extends PadmaLifeSaver\helpers\Plugin {
 
-	
-	private $source;
-	private $source_exist;
-	private $source_dir;
-	private $exist_source_dir;
-	private $exist_padma_dir;
+    
+    private $source;
+    private $source_exist;
+    private $source_dir;
+    private $exist_source_dir;
+    private $exist_padma_dir;
 
     
     public function __construct($args = false) {
 
-        $this->name 	= plugin_basename(__FILE__);
-        $this->pre 		= strtolower(__CLASS__);
-        $this->version 	= '1.0.8';
+        /*  Errors  */
+        error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
+        @ini_set('display_errors', 'Off');
+        
 
-        if( ! $this->detectSource())
-            return false;
+        $this->name     = plugin_basename(__FILE__);
+        $this->pre      = strtolower(__CLASS__);
+        $this->version  = '1.0.7';
+
+        $this->detectSource();
 
         
         $_SESSION['padma-life-saver-source'] = $this->source;
@@ -74,7 +78,7 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
         $this->options = array();
 
         $this->menu_pages = array(
-            'Padma Lifesaver'   =>  array(
+            'Padma LifeSaver'   =>  array(
                 'capability'        =>  'edit_dashboard',
                 'position'          =>  '1',
                 'func'              =>  'Settings',
@@ -85,7 +89,7 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
             'plugins_loaded'        =>  false,
             'after_setup_theme'     =>  false,
             'admin_notices'         =>  false,
-            //'wp_async_lifesaver_json'  =>  'setPadmaUnlimited'
+            'wp_async_life_saver_json'  =>  'setPadmaUnlimited'
         );
 
         $this->filters = array();
@@ -109,14 +113,7 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
         $basedir            = $basedir['basedir'];
         $this->skin_path    = $basedir . '/hwdata.json';
 
-        //new PadmaLifesaver\helpers\json();
-        //debug('damm');
-
-       // wp_schedule_single_event( time() + 1, 'setPadmaUnlimited' );
-
-        if($_POST){
-            $this->setPadmaUnlimited($_POST['include_widgets']);            
-        }
+        new PadmaLifeSaver\helpers\json();
 
     }
 
@@ -157,32 +154,32 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
 
         if($this->source == 'headway'){
 
-	        if(! class_exists('Headway')) {
-	            require_once(dirname(__FILE__) . '/helpers/headway/functions.php');
-	            require_once($this->source_dir . '/library/common/application.php');
-	        }
+            if(! class_exists('Headway')) {
+                require_once(dirname(__FILE__) . '/helpers/headway/functions.php');
+                require_once($this->source_dir . '/library/common/application.php');
+            }
 
-	        Headway::init();
-	        Headway::load('data/data-portability');
+            Headway::init();
+            Headway::load('data/data-portability');
 
-	        HeadwayOption::$current_skin = $_REQUEST['template'];
+            HeadwayOption::$current_skin = $_REQUEST['template'];
 
-	        require_once(dirname(__FILE__) . '/helpers/headway/data-portability.php');
+            require_once(dirname(__FILE__) . '/helpers/headway/data-portability.php');
 
-	        $info = array(
-	            'name'      =>  'Headway export ' . date('m-d-Y'),
-	            'author'    =>  $author,
-	            'version'   =>  'v' . HEADWAY_VERSION,
-	            'image-url' =>  ''
-	        );
+            $info = array(
+                'name'      =>  'Headway export ' . date('m-d-Y'),
+                'author'    =>  $author,
+                'version'   =>  'v' . HEADWAY_VERSION,
+                'image-url' =>  ''
+            );
 
-	        ob_start();
-	        $filename 	= PadmaLifesaver\helpers\HeadwayDataPortability::export_skin($info);
-	        $skin 		= ob_get_clean();
+            ob_start();
+            $filename   = PadmaLifeSaver\helpers\HeadwayDataPortability::export_skin($info);
+            $skin       = ob_get_clean();
 
         }elseif ($this->source == 'bloxtheme') {
 
-        	if(! class_exists('Blox')) {
+            if(! class_exists('Blox')) {
 
                 require_once(dirname(__FILE__) . '/helpers/bloxtheme/functions.php');
                 require_once($this->source_dir . '/library/common/application.php');
@@ -203,15 +200,15 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
             );
 
             ob_start();
-            $filename 	= PadmaLifesaver\helpers\BloxDataPortability::export_skin($info);
-            $skin 		= ob_get_clean();
+            $filename   = PadmaLifeSaver\helpers\BloxDataPortability::export_skin($info);
+            $skin       = ob_get_clean();
         }
         return $skin;
 
     }
 
 
-
+    // $json = $skin
     private function data_replace($string){
 
         $search_for = array(
@@ -261,51 +258,6 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
             return $this->data_replace($data);                
         }
 
-        /*
-        if(!is_array($data))
-            $data = (array)$data;
-
-
-        if($this->source == 'headway'){
-            $search_for = 'headway';
-        }elseif ($this->source == 'bloxtheme') {
-            $search_for = 'bloxtheme';
-        }
-
-        $new_data = array();
-        foreach ($data as $key => $group) {
-            
-            $group = (array)$group;
-            
-            foreach ($group as $param => $setting) {
-
-                if(is_serialized($setting)){
-                    $settings_data = unserialize( $setting );
-                }else{
-                    $settings_data = $setting;                    
-                }
-
-                if(is_array($settings_data)){     
-
-                    foreach ($settings_data as $k => $value) {
-
-                        if(preg_match('/$search_for/',$k)){
-                            $new_key = $this->data_replace($k);
-                        }else{
-                            $new_key = $k;
-                        }
-
-                        //$settings_data[$new_key] = $this->data_replace_array($value);
-                        
-                    }
-                }
-
-
-                $new_data[$key][$param] = $settings_data;
-            }
-        }
-        return $new_data;
-        */
     }
 
     // $json = $skin
@@ -348,124 +300,22 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
             'data_pu_blocks'        => $this->data_serialize($data['blocks']),
         );
 
-        //debug($padmaSkin);
-
-        /*
-        if($this->source == 'headway'){
-
-            $json = preg_replace('/(hw)/', 'pu', $json);
-            $json = preg_replace('/(headway\_)/', 'padma_', $json);
-           
-        }elseif ($this->source == 'bloxtheme') {
-
-            $json = preg_replace('/(bt)/', 'pu', $json);
-            $json = preg_replace('/(bloxtheme\_)/', 'padma_', $json);
-
-    	}else{
-    		return;
-    	}
-
-
-        // pass on general settings
-        $json   = json_decode($json);
-
-     
-         // WP Data
         
-        $data['options'] = (array)$json->data_wp_options;
-        $data['postmeta'] = (array)$json->data_wp_postmeta;
-
-        if($this->source == 'headway'){
-
-            // HTW Data
-            $data['layout_meta']    = (array)$json->data_hw_layout_meta;
-            $data['wrappers']       = (array)$json->data_hw_wrappers;
-            $data['blocks']         = (array)$json->data_hw_blocks;
-            
-        }elseif ($this->source == 'bloxtheme') {
-
-            // Blox Data
-            $data['layout_meta']    = (array)$json->data_bt_layout_meta;
-            $data['wrappers']       = (array)$json->data_bt_wrappers;
-            $data['blocks']         = (array)$json->data_bt_blocks;
-
-        }else{
-            return;
-        }
-
-
-        $data_padma = array();
-        foreach ($data as $skin_key => $skin_params) {
-
-            debug($skin_key);
-            debug($skin_params);
-            
-            $skin_params_options = array();
-            foreach ($skin_params as $key => $option) {
-                
-                $option = (array)$option;
-                //$skin_params_options[$key] = $option;
-
-                foreach ($option as $param => $setting) {
-                    if(is_serialized($setting)){
-                        $skin_params_options[$key][$param] = unserialize( $setting );
-                    }
-                }
-            }
-            $data_padma[$skin_key] = json_encode($skin_params_options);
-
-        }
-
-        debug($data_padma);
-        
-        
-
-        
-        if($this->source == 'headway'){
-        	
-        	$data_pu_blocks 	= preg_replace('/(\-headway\-)/', '-padma-', $data_pu_blocks);
-
-        }elseif ($this->source == 'bloxtheme'){
-
-			$data_pu_blocks 	= preg_replace('/(\-bloxtheme\-)/', '-padma-', $data_pu_blocks);
-        }
-
-        // Setup new data
-        $json->data_pu_wrappers     = $data_padma['wrappers'];
-        $json->data_wp_options      = $data_padma['options'];
-        $json->data_pu_blocks       = $data_padma['blocks'];
-        $json->data_pu_layout_meta  = $data_padma['layout_meta'];
-        $json->data_pu_postmeta     = $data_padma['postmeta'];
-        $json                       = json_encode($json);
-
-        */
-        //debug($padmaSkin);
         return json_encode($padmaSkin);
     }
 
 
     public function setPadmaUnlimited($include_widgets) {
 
-        debug('wtf');
-
         if(! class_exists('Padma')) {
             require_once(dirname(__FILE__) . '/helpers/padma/functions.php');
-            //require_once($this->padma_dir . '/library/common/functions.php');
             require_once($this->padma_dir . '/library/common/application.php');
-            require_once($this->padma_dir . '/library/common/templates.php');
-            require_once($this->padma_dir . '/library/common/image-resizer.php');
-            require_once($this->padma_dir . '/library/data/data-options.php');
-            require_once($this->padma_dir . '/library/data/data-layout-options.php');
-            require_once($this->padma_dir . '/library/data/data-snapshots.php');
-            require_once($this->padma_dir  . '/library/data/data-portability.php');
-            require_once($this->padma_dir  . '/library/visual-editor/visual-editor-ajax.php');
         }
+        
         Padma::init();
-        //Padma::load('visual-editor/visual-editor-ajax');
-        Padma::load('data/data-portability');		
+        Padma::load('data/data-portability');       
 
         if(file_exists($this->skin_path)) {
-            
             $json = file_get_contents($this->skin_path);
 
             PadmaDataPortability::install_skin(json_decode($json, true));
@@ -474,8 +324,8 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
 
         if(! empty($include_widgets)) {
 
-            $sidebars_widgets 	= get_option('sidebars_widgets', array());
-            $theme_mods 		= get_option('theme_mods_' . $this->source, array());
+            $sidebars_widgets   = get_option('sidebars_widgets', array());
+            $theme_mods         = get_option('theme_mods_' . $this->source, array());
 
             if(isset($sidebars_widgets['array_version'])) {
                 unset($sidebars_widgets['array_version']);
@@ -486,13 +336,13 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
                 $theme_mods['sidebars_widgets'] = array();
             }
 
-            // migrate hw/blox widgets to padma
+            // migrate hw widgets to blox
             switch($this->template) {
                 
-                case 'padma':// if Padma in use
+                case 'padma':// if Bloxtheme in use
 
-                    $sidebars_widgets 					= $theme_mods['sidebars_widgets']['data'];
-                    $sidebars_widgets['array_version'] 	= 3;
+                    $sidebars_widgets                   = $theme_mods['sidebars_widgets']['data'];
+                    $sidebars_widgets['array_version']  = 3;
                     update_option('sidebars_widgets', $sidebars_widgets);
                     break;
                 
@@ -516,10 +366,10 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
             }
         }
 
-        $templates 		= PadmaTemplates::get_all();
-        $last_template 	= end($templates);
+        $templates      = PadmaTemplates::get_all();
+        $last_template  = end($templates);
         reset($templates);
-        $_POST['skin'] 	= $last_template['id'];
+        $_POST['skin']  = $last_template['id'];
 
         Padma::load('visual-editor/visual-editor-ajax');
 
@@ -531,11 +381,11 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
 
     public function plugins_loaded() {
 
-        if(isset($_REQUEST['PadmaLifesaver'])) {
+        if(isset($_REQUEST['PadmaLifeSaver'])) {
 
-            if(wp_verify_nonce($_REQUEST['nonce'], 'PadmaLifesaver_nonce') !== false) {
+            if(wp_verify_nonce($_REQUEST['nonce'], 'PadmaLifeSaver_nonce') !== false) {
 
-                $this->template 	= get_option('template', '');                
+                $this->template     = get_option('template', '');                
                 if($this->template != 'headway' && $this->template != 'bloxtheme') {
                     update_option('template', 'padma');
                 }
@@ -546,14 +396,14 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
                 }
 
             } else {
-                throw new Exception('PadmaLifesaver nonce invalid');
+                throw new Exception('PadmaLifeSaver nonce invalid');
             }
 
-        } elseif(isset($_REQUEST['lifesaver_install_skin']) && file_exists($this->skin_path)) {
+        } elseif(isset($_REQUEST['life_saver_install_skin']) && file_exists($this->skin_path)) {
 
-            if(wp_verify_nonce($_REQUEST['nonce'], 'lifesaver_skin_nonce') !== false) {
+            if(wp_verify_nonce($_REQUEST['nonce'], 'life_saver_skin_nonce') !== false) {
 
-                $this->template 	= get_option('template', '');
+                $this->template     = get_option('template', '');
                 if($this->template != 'padma') {
                     update_option('template', 'padma');
                 }
@@ -563,7 +413,7 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
                     update_option('stylesheet', 'padma');
                 }
             } else {
-                throw new Exception('PadmaLifesaver nonce invalid');
+                throw new Exception('PadmaLifeSaver nonce invalid');
             }
         }
     }
@@ -571,26 +421,25 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
 
     public function after_setup_theme() {
 
-        if(isset($_REQUEST['PadmaLifesaver'])) {
+        if(isset($_REQUEST['PadmaLifeSaver'])) {
 
-            if(wp_verify_nonce($_REQUEST['nonce'], 'PadmaLifesaver_nonce') !== false) {
+            if(wp_verify_nonce($_REQUEST['nonce'], 'PadmaLifeSaver_nonce') !== false) {
 
-            	$skin = $this->getSource();
+                $skin = $this->getSource();
                 $json = $this->converttoPadmaUnlimited($skin);
-
 
                 if(! empty($json)) {
 
                     file_put_contents($this->skin_path, $json);
-                    do_action('lifesaver_json', empty($_REQUEST['widgets']) ? 0 : 1);
+                    do_action('life_saver_json', empty($_REQUEST['widgets']) ? 0 : 1);
 
-                    $referer 	= $_SERVER['HTTP_REFERER'];
-                    $frags 		= explode('?', $referer);
+                    $referer    = $_SERVER['HTTP_REFERER'];
+                    $frags      = explode('?', $referer);
 
                     if(isset($frags[1])) {
 
                         parse_str($frags[1], $query);
-                        $query['PadmaLifesaver-convert'] = 'complete';
+                        $query['PadmaLifeSaver-convert'] = 'complete';
 
                         $referer = $frags[0] . '?' . http_build_query($query);
                     }
@@ -599,12 +448,12 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
                     exit;
                 }
             } else {
-                throw new Exception('PadmaLifesaver nonce invalid');
+                throw new Exception('PadmaLifeSaver nonce invalid');
             }
 
-        } elseif(isset($_REQUEST['lifesaver_install_skin']) && file_exists($this->skin_path)) {
+        } elseif(isset($_REQUEST['life_saver_install_skin']) && file_exists($this->skin_path)) {
 
-            if(wp_verify_nonce($_REQUEST['nonce'], 'lifesaver_skin_nonce') !== false) {
+            if(wp_verify_nonce($_REQUEST['nonce'], 'life_saver_skin_nonce') !== false) {
 
                 if($this->template != 'padma' ) {
                     update_option('template', $this->template);
@@ -615,7 +464,7 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
                 }
 
             } else {
-                throw new Exception('PadmaLifesaver nonce invalid');
+                throw new Exception('PadmaLifeSaver nonce invalid');
             }
         }
     }
@@ -623,7 +472,7 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
 
     public function admin_notices() {
 
-        if(isset($_GET['PadmaLifesaver-convert']) && $_GET['PadmaLifesaver-convert'] == 'complete') {
+        if(isset($_GET['PadmaLifeSaver-convert']) && $_GET['PadmaLifeSaver-convert'] == 'complete') {
             $this->render_msg(ucfirst($this->source) . ' to Padma Unlimited conversion completed.');
         }
 
@@ -641,69 +490,64 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
             die();
         }
 
-        if($_GET['PadmaLifesaver-convert']!='complete'){
-	        $this->render_msg('Make a full backup before start.');
-	        $this->render_msg(ucfirst($this->source) . ' detected');        	
+        if($_GET['PadmaLifeSaver-convert']!='complete'){
+            $this->render_msg('Make a full backup before start.');
+            $this->render_msg(ucfirst($this->source) . ' detected');            
         }
 
 
         if($this->source == 'headway'){
 
-	        if(! class_exists('HeadwayTemplates')) {
-	            require($this->source_dir . '/library/common/image-resizer.php');
-	            require_once(dirname(__FILE__) . '/helpers/headway/functions.php');
-	            require($this->source_dir . '/library/data/data-options.php');
-	            require($this->source_dir . '/library/common/templates.php');
-	        }
+            if(! class_exists('HeadwayTemplates')) {
+                require($this->source_dir . '/library/common/image-resizer.php');
+                require_once(dirname(__FILE__) . '/helpers/headway/functions.php');
+                require($this->source_dir . '/library/data/data-options.php');
+                require($this->source_dir . '/library/common/templates.php');
+            }
 
-	        $templates = HeadwayTemplates::get_all();
-        	
+            $templates = HeadwayTemplates::get_all();
+            
         }elseif ($this->source == 'bloxtheme') {
 
-        	if(! class_exists('BloxTemplates')) {
-	            require($this->source_dir . '/library/common/image-resizer.php');
-	            require_once(dirname(__FILE__) . '/helpers/bloxtheme/functions.php');
-	            require($this->source_dir . '/library/data/data-options.php');
-	            require($this->source_dir . '/library/common/templates.php');
-	        }
+            if(! class_exists('BloxTemplates')) {
+                require($this->source_dir . '/library/common/image-resizer.php');
+                require_once(dirname(__FILE__) . '/helpers/bloxtheme/functions.php');
+                require($this->source_dir . '/library/data/data-options.php');
+                require($this->source_dir . '/library/common/templates.php');
+            }
 
-	        $templates = BloxTemplates::get_all();
+            $templates = BloxTemplates::get_all();
         }
 
         $this->render('settings', array(
             'source_exist'  =>  $this->source_exist,
             'padma_exist'   =>  $this->padma_exist,
-            'nonce'     	=>  wp_create_nonce('PadmaLifesaver_nonce'),
-            'templates' 	=>  $templates
+            'nonce'         =>  wp_create_nonce('PadmaLifeSaver_nonce'),
+            'templates'     =>  $templates
         ));
     }
 
 
     /**
-	 *
-	 * Detect Source
-	 *
-	 */
-	public function detectSource(){
+     *
+     * Detect Source
+     *
+     */
+    public function detectSource(){
 
-    	if(class_exists('Headway')) {
-    		$this->source = 'headway';
-            return true;
+        if(class_exists('Headway')) {
+            $this->source = 'headway';
 
         }elseif (class_exists('Blox')) {            
             $this->source = 'bloxtheme';
-            return true;
 
         }elseif (file_exists(WP_CONTENT_DIR . '/themes/headway')) {
             $this->source = 'headway';
-            return true;
 
         }elseif (file_exists(WP_CONTENT_DIR . '/themes/bloxtheme')) {
             $this->source = 'bloxtheme';
-            return true;
-    	}
+        }
 
-        return false;
     }
 }
 
@@ -712,13 +556,13 @@ class PadmaLifesaver extends PadmaLifesaver\helpers\Plugin {
  * Debug function
  *
  */
-if(!function_exists('debug')){	
-	function debug($data){
-		error_log("<pre>".print_r($data,1)."</pre>");
-	}	
+if(!function_exists('debug')){  
+    function debug($data){
+        error_log("<pre>".print_r($data,1)."</pre>");
+    }   
 }
 
-$GLOBALS['PadmaLifesaver'] = new PadmaLifesaver();
+$GLOBALS['PadmaLifeSaver'] = new PadmaLifeSaver();
 
 
 // Updates
