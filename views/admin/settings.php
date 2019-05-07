@@ -11,7 +11,7 @@
         </div>
         <br />
         <div>
-            <label for="template"><?php echo ucfirst($_SESSION['padma-life-saver-source']); ?> Template:</label>
+            <label for="template"><?php echo ucfirst($_SESSION['padma-lifesaver-source']); ?> Template:</label>
             <select id="template" name="template">
                 <?php foreach($templates as $template): ?>
                 <option value="<?php echo $template['id']; ?>"><?php echo $template['name']; ?></option>

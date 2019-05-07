@@ -18,6 +18,6 @@ class json extends \WP_Async_Task {
     }
 
     protected function run_action() {
-        do_action("wp_async_task_$this->action", $_POST['include_widgets']);
+        do_action('wp_async_' . $this->action, $_POST['include_widgets']);
     }
 }
