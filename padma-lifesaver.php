@@ -3,7 +3,7 @@
 Plugin Name:    Padma Lifesaver
 Plugin URI:     https://padmaunlimited/plugins/padma-lifesaver
 Description:    Padma Lifesaver plugin allows convert Headway or Blox Templates to Padma Unlimited Templates. Based on the original plugin hw-to-bt from Johnathan.PRO.
-Version:        1.0.8
+Version:        1.0.9
 Author:         Padma Unlimited Team
 Author URI:     https://www.padmaunlimited.com/
 License:        GPL2
@@ -47,20 +47,11 @@ class Lifesaver extends PadmaLifesaver\helpers\Plugin {
     
     public function __construct($args = false) {
 
-        /*  Errors  */
-        //error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
-        //@ini_set('display_errors', 'Off');
-
-
-
-        
-
         $this->name     = plugin_basename(__FILE__);
         $this->pre      = strtolower(__CLASS__);
         $this->version  = '1.0.8';
 
         $this->detectSource();
-
         
         $_SESSION['padma-lifesaver-source'] = $this->source;
 
@@ -224,16 +215,6 @@ class Lifesaver extends PadmaLifesaver\helpers\Plugin {
             '/(bloxtheme\_)/',
             '/(\-headway\-)/',
             '/(\-bloxtheme\-)/',
-            /*
-            '/headway_/',
-            '/bloxtheme_/',
-            '/headway\-/',
-            '/bloxtheme\-/',
-            '/(hw\-)/',
-            '/(bt\-)/',
-            '/(_hw_)/',
-            '/(_bt_)/',
-            */
         );
 
         $replace_for = array(
@@ -243,16 +224,6 @@ class Lifesaver extends PadmaLifesaver\helpers\Plugin {
             'padma_',
             '-padma-',
             '-padma-',
-            /*
-            'padma_',
-            'padma_',
-            'padma-',
-            'padma-',
-            'pu-',
-            'pu-',
-            '_pu_',
-            '_pu_',
-            */
         );
 
         return preg_replace($search_for, $replace_for, $string);
@@ -549,11 +520,8 @@ class Lifesaver extends PadmaLifesaver\helpers\Plugin {
 
     public function admin_notices() {
 
-        //debug(array('admin_notices' => $_REQUEST));
-
-
         if(isset($_GET['PadmaLifesaver-convert']) && $_GET['PadmaLifesaver-convert'] == 'complete') {
-            $this->render_msg(ucfirst($this->source) . ' to Padma Unlimited conversion completed.');
+            $this->render_msg(ucfirst($this->source) . ' to Padma Unlimited conversion completed. You can safely uninstall this plugin.');
         }
 
     }
@@ -644,17 +612,6 @@ if(!function_exists('debug')){
 }
 
 $GLOBALS['Lifesaver'] = new Lifesaver();
-
-
-// Updates
-if(is_admin()){
-    add_action('after_setup_theme', 'padma_lifesaver_updates');
-    function padma_lifesaver_updates(){
-        if ( ! empty ( $GLOBALS[ 'PadmaUpdater' ] ) ){
-            $GLOBALS[ 'PadmaUpdater' ]->updater('padma-lifesaver',__DIR__);
-        }
-    }
-}
 
 
 /**
