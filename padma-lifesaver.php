@@ -441,6 +441,7 @@ class Lifesaver extends PadmaLifesaver\helpers\Plugin {
             $meta_id = $data['meta_id'];
             $post_id = $data['post_id'];
             $meta_key =  str_replace('_hw_', '_pu_', $data['meta_key']);
+            $meta_key =  str_replace('_bt_', '_pu_', $meta_key);
             $meta_value = $data['meta_value'];
 
             add_post_meta($post_id, $meta_key, $meta_value);
