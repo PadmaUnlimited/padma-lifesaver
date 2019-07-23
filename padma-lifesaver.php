@@ -3,7 +3,7 @@
 Plugin Name:    Padma Lifesaver
 Plugin URI:     https://padmaunlimited/plugins/padma-lifesaver
 Description:    Padma Lifesaver plugin allows convert Headway or Blox Templates to Padma Unlimited Templates. Based on the original plugin hw-to-bt from Johnathan.PRO.
-Version:        1.0.10
+Version:        1.0.11
 Author:         Padma Unlimited Team
 Author URI:     https://www.padmaunlimited.com/
 License:        GPL2
@@ -49,7 +49,7 @@ class Lifesaver extends PadmaLifesaver\helpers\Plugin {
 
         $this->name     = plugin_basename(__FILE__);
         $this->pre      = strtolower(__CLASS__);
-        $this->version  = '1.0.10';
+        $this->version  = '1.0.11';
 
         $this->detectSource();
         
@@ -432,7 +432,7 @@ class Lifesaver extends PadmaLifesaver\helpers\Plugin {
         global $wpdb;
 
         $meta = $wpdb->get_results(
-            $wpdb->prepare("SELECT * FROM $wpdb->postmeta WHERE meta_key like '%s'", $wpdb->esc_like('_hw_') . '%')
+            $wpdb->prepare("SELECT * FROM $wpdb->postmeta WHERE meta_key like '%s' or meta_key like '%s'", $wpdb->esc_like('_hw_') . '%', $wpdb->esc_like('_bt_') . '%')
             , ARRAY_A);
         
 
@@ -440,8 +440,11 @@ class Lifesaver extends PadmaLifesaver\helpers\Plugin {
 
             $meta_id = $data['meta_id'];
             $post_id = $data['post_id'];
-            $meta_key =  str_replace('_hw_', '_pu_', $data['meta_key']);
+
+            $meta_key = $data['meta_key'];
+            $meta_key =  str_replace('_hw_', '_pu_', $meta_key);
             $meta_key =  str_replace('_bt_', '_pu_', $meta_key);
+            
             $meta_value = $data['meta_value'];
 
             add_post_meta($post_id, $meta_key, $meta_value);
