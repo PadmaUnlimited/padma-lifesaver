@@ -3,7 +3,7 @@
 Plugin Name:    Padma Lifesaver
 Plugin URI:     https://padmaunlimited/plugins/padma-lifesaver
 Description:    Padma Lifesaver plugin allows convert Headway or Blox Templates to Padma Unlimited Templates. Based on the original plugin hw-to-bt from Johnathan.PRO.
-Version:        1.0.11
+Version:        1.0.12
 Author:         Padma Unlimited Team
 Author URI:     https://www.padmaunlimited.com/
 License:        GPL2
@@ -256,55 +256,6 @@ class Lifesaver extends PadmaLifesaver\helpers\Plugin {
 
     
     private function converttoPadmaUnlimited($json) {
-
-        /*
-        $json       = json_decode($json);
-        $imageURl   = 'image-url';
-        $data       = array();
-
-
-        if($this->source == 'headway'){
-
-            // HTW Data
-            $data['layout_meta']    = (array)$json->data_hw_layout_meta;
-            $data['wrappers']       = (array)$json->data_hw_wrappers;
-            $data['blocks']         = (array)$json->data_hw_blocks;
-            
-        }elseif ($this->source == 'bloxtheme') {
-
-            // Blox Data
-            $data['layout_meta']    = (array)$json->data_bt_layout_meta;
-            $data['wrappers']       = (array)$json->data_bt_wrappers;
-            $data['blocks']         = (array)$json->data_bt_blocks;
-
-        }else{
-            return;
-        }
-
-        $data_wp_options = array();
-        foreach ($json->data_wp_options as $key => $obj) {
-            $data = (array)$obj;
-            $data['option_name'] = str_replace('headway_', 'padma_', $data['option_name']);            
-            $data['option_name'] = str_replace('bloxtheme_', 'padma_', $data['option_name']);            
-            //debug($data);
-            $data_wp_options[$key] = (object)$data;
-        }
-
-        $padmaSkin = array(
-            'pu-version'            => '1.1.0',
-            'name'                  => $json->name,
-            'author'                => $json->author,
-            'image-url'             => $json->$imageURl,
-            'version'               => $json->version,
-            'data_wp_options'       => $this->data_serialize($data_wp_options),
-            'data_wp_postmeta'      => $this->data_serialize($json->data_wp_postmeta),
-            'data_pu_layout_meta'   => $this->data_serialize($data['layout_meta']),
-            'data_pu_wrappers'      => $this->data_serialize($data['wrappers']),
-            'data_pu_blocks'        => $this->data_serialize($data['blocks']),
-        );
-        
-        return json_encode($padmaSkin);
-        */
         
         if($this->source == 'headway'){
 
@@ -360,7 +311,7 @@ class Lifesaver extends PadmaLifesaver\helpers\Plugin {
             $json = file_get_contents($this->skin_path);
             $json = PadmaVisualEditorAJAX::replace_imported_images_variables($json);
             PadmaDataPortability::install_skin( json_decode($json, true));
-            //unlink($this->skin_path);
+            
         }
 
         if(! empty($include_widgets)) {
