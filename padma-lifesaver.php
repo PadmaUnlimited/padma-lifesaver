@@ -640,8 +640,7 @@ function padma_lifesaver_activate(){
 
         if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {             
                       
-            $sql = get_padma_db_structures($table_name, $table_structure);
-            //debug($sql);
+            $sql = get_padma_db_structures($table_name, $table_structure);            
             dbDelta( $sql );
 
             if ( function_exists('maybe_convert_table_to_utf8mb4') ) {
