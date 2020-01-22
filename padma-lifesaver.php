@@ -3,7 +3,7 @@
 Plugin Name:    Padma Lifesaver
 Plugin URI:     https://padmaunlimited/plugins/padma-lifesaver
 Description:    Padma Lifesaver plugin allows convert Headway or Blox Templates to Padma Unlimited Templates. Based on the original plugin hw-to-bt from Johnathan.PRO.
-Version:        1.0.13
+Version:        1.0.14
 Author:         Padma Unlimited Team
 Author URI:     https://www.padmaunlimited.com/
 License:        GPL2
@@ -520,9 +520,12 @@ class Lifesaver extends PadmaLifesaver\helpers\Plugin {
             die();
         }
 
-        if($_GET['PadmaLifesaver-convert']!='complete'){
+        if($_GET['PadmaLifesaver-convert']!='complete'){            
             $this->render_msg('Make a full backup before start.');
-            $this->render_msg(ucfirst($this->source) . ' detected');            
+            if( empty($this->source) )
+                $this->render_msg('Neither Headway nor Blox was detected');
+            else
+                $this->render_msg(ucfirst($this->source) . ' detected');
         }
 
 
